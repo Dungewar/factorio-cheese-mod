@@ -65,7 +65,7 @@ beryllium.name = "beryllium"
 
 beryllium.icons = {
   {
-    icon = "__fire-armor__/graphics/beryllium.png",
+    icon = "__cheesetorio__/graphics/beryllium.png",
     icon_size = 1024,
     -- tint = {r=0,g=0,b=0,a=0}
   },
@@ -83,7 +83,6 @@ local berylliumRecipe = {
     { type = "fluid", name = "sulfuric-acid", amount = 150 }
   },
   results = { 
-    { type = "item", name = "fire-armor", amount = 1 },
     { type = "fluid", name = "water", amount = 150 },
     { type = "item", name = "beryllium", amount = 1 },
   }
