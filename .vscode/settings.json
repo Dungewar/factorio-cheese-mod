@@ -1,0 +1,8 @@
+{
+    "Lua.diagnostics.disable": [
+        "undefined-global",
+        "undefined-field"
+    ],
+    "files.autoSave": "onWindowChange",
+    "files.autoSaveDelay": 50
+}
