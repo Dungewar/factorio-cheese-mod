@@ -1,9 +1,9 @@
 {
-  "name": "fire-armor",
+  "name": "cheesetorio",
   "version": "0.1.0",
-  "title": "Fire Armor",
+  "title": "Cheesetorio",
   "author": "Dungewar",
   "factorio_version": "2.0",
   "dependencies": ["base >= 2.0"],
-  "description": "This mod adds in fire armor that leaves behind damaging fire as you walk around."
+  "description": "I like cheese!"
 }
