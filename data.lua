@@ -1,40 +1,42 @@
-local beryllium = table.deepcopy(data.raw["item"]["iron-plate"])
+--local beryllium = table.deepcopy(data.raw["item"]["iron-plate"])
+--
+--beryllium.name = "beryllium"
+--
+---- Hurricane stuff!
+---- local Hurricane = require("graphics/hurricane")
+---- local skin = Hurricane.crafter({
+----   name = "beryllium.png",
+----   width = 1024, height = 1024,
+----   total_frames = 1,
+----   shadow_width = 0, shadow_height = 0,
+---- })
+--
+--beryllium.icons = {
+--  {
+--    icon = "__cheesetorio__/graphics/beryllium.png",
+--    icon_size = 1024,
+--    -- tint = {r=0,g=0,b=0,a=0}
+--  },
+--}
+--
+--local beryllium_recipe = {
+--  type = "recipe",
+--  name = "beryllium",
+--  category = "crafting-with-fluid",
+--  main_product = "beryllium",
+--  enabled = true,
+--  energy_required = 10, -- time to craft in seconds (at crafting speed 1)
+--  ingredients = {
+--    { type = "item",  name = "coal",          amount = 1 },
+--    { type = "fluid", name = "sulfuric-acid", amount = 150 }
+--  },
+--  results = {
+--    { type = "fluid", name = "water",     amount = 150 },
+--    { type = "item",  name = "beryllium", amount = 1 },
+--  }
+--}
 
-beryllium.name = "beryllium"
-
--- Hurricane stuff!
--- local Hurricane = require("graphics/hurricane")
--- local skin = Hurricane.crafter({
---   name = "beryllium.png",
---   width = 1024, height = 1024,
---   total_frames = 1,
---   shadow_width = 0, shadow_height = 0,
--- })
-
-beryllium.icons = {
-  {
-    icon = "__cheesetorio__/graphics/beryllium.png",
-    icon_size = 1024,
-    -- tint = {r=0,g=0,b=0,a=0}
-  },
-}
-
-local beryllium_recipe = {
-  type = "recipe",
-  name = "beryllium",
-  category = "crafting-with-fluid",
-  main_product = "beryllium",
-  enabled = true,
-  energy_required = 10, -- time to craft in seconds (at crafting speed 1)
-  ingredients = {
-    { type = "item",  name = "coal",          amount = 1 },
-    { type = "fluid", name = "sulfuric-acid", amount = 150 }
-  },
-  results = {
-    { type = "fluid", name = "water",     amount = 150 },
-    { type = "item",  name = "beryllium", amount = 1 },
-  }
-}
+require("items")
 
 local milk_item = table.deepcopy(data.raw["fluid"]["water"])
 
@@ -112,13 +114,7 @@ data:extend({ milk_pumpjack })
 
 
 
-local milk_pumpjack_item = table.deepcopy(data.raw["item"]["pumpjack"])
 
-milk_pumpjack_item.name = "milk-pumpjack"
-
-milk_pumpjack_item.stack_size = 10
-milk_pumpjack_item.place_result = "milk-pumpjack"
-milk_pumpjack_item.icon = "__cheesetorio__/graphics/icons/milk-pumpjack.png"
 
 
 local milk_pumpjack_recipe = {
@@ -142,4 +138,4 @@ data:extend({
   }
 })
 
-data:extend { beryllium, beryllium_recipe, milk_item, milk_vent, milk_pumpjack_item, milk_pumpjack_recipe }
+data:extend { milk_item, milk_vent, milk_pumpjack_recipe }
