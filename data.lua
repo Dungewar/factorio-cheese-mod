@@ -64,11 +64,11 @@ local resource_autoplace = require("resource-autoplace")
 milk_vent.autoplace = resource_autoplace.resource_autoplace_settings {
   name = "milk-vent",
   order = "c",
-  base_density = 8.2,
+  base_density = 80.2,
   base_spots_per_km2 = 100.8,
-  random_probability = 1 / 48,
-  random_spot_size_minimum = 1,
-  random_spot_size_maximum = 1,
+  random_probability = 1,
+  random_spot_size_minimum = 10,
+  random_spot_size_maximum = 100,
   additional_richness = 220000,
   has_starting_area_placement = true,
   regular_rq_factor_multiplier = 1
@@ -76,6 +76,12 @@ milk_vent.autoplace = resource_autoplace.resource_autoplace_settings {
 milk_vent.selection_box = {{-0.5, -0.5}, {0.5, 0.5}}
 milk_vent.collision_box = {{-0.1, -0.1}, {0.1, 0.1}}
 milk_vent.category = "milk-fluid"
+milk_vent.minable = {
+  mining_time = 1,
+  results = {
+    { type = "fluid", name = "milk", amount = 10 }
+  }
+}
 
 local milk_pumpjack = table.deepcopy(data.raw["mining-drill"]["pumpjack"])
 milk_pumpjack.name = "milk-pumpjack"
@@ -84,7 +90,7 @@ milk_pumpjack.minable.result = "milk-pumpjack"
 milk_pumpjack.resource_categories = { "milk-fluid" }
 milk_pumpjack.output_fluid_box =
 {
-  volume = 1000,
+  volume = 1,
   pipe_covers = pipecoverspictures(),
   pipe_connections =
   {
@@ -118,7 +124,6 @@ milk_pumpjack_item.icon = "__cheesetorio__/graphics/icons/milk-pumpjack.png"
 local milk_pumpjack_recipe = {
   type = "recipe",
   name = "milk-pumpjack",
-  -- main_product = "milk-pumpjack",
   enabled = true,
   energy_required = 1, -- time to craft in seconds (at crafting speed 1)
   ingredients = {
