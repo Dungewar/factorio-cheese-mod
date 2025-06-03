@@ -1,56 +1,4 @@
---data.lua
-
--- local fireArmor = table.deepcopy(data.raw["armor"]["heavy-armor"]) -- copy the table that defines the heavy armor item into the fireArmor variable
-
--- fireArmor.name = "fire-armor"
--- fireArmor.icons = {
---   {
---     icon = fireArmor.icon,
---     icon_size = fireArmor.icon_size,
---     tint = { r = 1, g = 0, b = 0, a = 0.3 }
---   },
--- }
-
--- fireArmor.resistances = {
---   {
---     type = "physical",
---     decrease = 6,
---     percent = 10
---   },
---   {
---     type = "explosion",
---     decrease = 10,
---     percent = 30
---   },
---   {
---     type = "acid",
---     decrease = 5,
---     percent = 30
---   },
---   {
---     type = "fire",
---     decrease = 0,
---     percent = 100
---   }
--- }
-
--- -- create the recipe prototype from scratch
--- local fireArmorRecipe = {
---   type = "recipe",
---   name = "fire-armor",
---   enabled = true,
---   energy_required = 8, -- time to craft in seconds (at crafting speed 1)
---   ingredients = {
---     { type = "item", name = "copper-plate", amount = 200 },
---     { type = "item", name = "steel-plate",  amount = 50 }
---   },
---   results = { { type = "item", name = "fire-armor", amount = 1 } }
--- }
-
--- data:extend { fireArmor, fireArmorRecipe }
-
-
-local beryllium = table.deepcopy(data.raw["item"]["iron-plate"]) -- copy the table that defines the heavy armor item into the fireArmor variable
+local beryllium = table.deepcopy(data.raw["item"]["iron-plate"])
 
 beryllium.name = "beryllium"
 
@@ -71,7 +19,7 @@ beryllium.icons = {
   },
 }
 
-local berylliumRecipe = {
+local beryllium_recipe = {
   type = "recipe",
   name = "beryllium",
   category = "crafting-with-fluid",
@@ -79,20 +27,20 @@ local berylliumRecipe = {
   enabled = true,
   energy_required = 10, -- time to craft in seconds (at crafting speed 1)
   ingredients = {
-    { type = "item",  name = "coal",  amount = 1 },
+    { type = "item",  name = "coal",          amount = 1 },
     { type = "fluid", name = "sulfuric-acid", amount = 150 }
   },
-  results = { 
-    { type = "fluid", name = "water", amount = 150 },
-    { type = "item", name = "beryllium", amount = 1 },
+  results = {
+    { type = "fluid", name = "water",     amount = 150 },
+    { type = "item",  name = "beryllium", amount = 1 },
   }
 }
 
-local milkItem = table.deepcopy(data.raw["fluid"]["water"])
+local milk_item = table.deepcopy(data.raw["fluid"]["water"])
 
-milkItem.name = "milk"
+milk_item.name = "milk"
 
-milkItem.icons = {
+milk_item.icons = {
   {
     icon = "__cheesetorio__/graphics/milk.png",
     -- icon = "__base__/graphics/icons/fluid/water.png",
@@ -100,69 +48,93 @@ milkItem.icons = {
   }
 }
 
+local milk_vent = table.deepcopy(data.raw["resource"]["crude-oil"])
 
-local milk_vent = {
-  type = "resource",
-  name = "crude-oil",
-  icon = "__base__/graphics/icons/crude-oil.png",
-  icon_size = 32,
-  flags = {"placeable-neutral"},
-  category = "basic-fluid",
-  order="a-b-a",
-  infinite = true,
-  highlight = true,
-  minimum = 60000,
-  normal = 300000,
-  infinite_depletion_amount = 10,
-  resource_patch_search_radius = 12,
-  tree_removal_probability = 0.7,
-  tree_removal_max_distance = 32 * 32,
-  minable =
+milk_vent.name = "milk-vent"
+milk_vent.minable.results = {
+  { type = "fluid", name = "milk", amount_min = 5, amount_max = 15 }
+}
+milk_vent.map_color = { r = 1.0, g = 1.0, b = 1.0 } -- milk white
+milk_vent.icon = "__base__/graphics/entity/crude-oil/crude-oil.png"
+-- milk_vent.stages.sheet.filename = "__cheesetorio__/graphics/entity/milk-vent.png"
+-- milk_vent.stages.sheet.hr_version.filename = "__cheesetorio__/graphics/entity/hr-milk-vent.png"
+
+local resource_autoplace = require("resource-autoplace")
+
+milk_vent.autoplace = resource_autoplace.resource_autoplace_settings {
+  name = "milk-vent",
+  order = "c",
+  base_density = 8.2,
+  base_spots_per_km2 = 100.8,
+  random_probability = 1 / 48,
+  random_spot_size_minimum = 1,
+  random_spot_size_maximum = 1,
+  additional_richness = 220000,
+  has_starting_area_placement = true,
+  regular_rq_factor_multiplier = 1
+}
+milk_vent.selection_box = {{-0.5, -0.5}, {0.5, 0.5}}
+milk_vent.collision_box = {{-0.1, -0.1}, {0.1, 0.1}}
+milk_vent.category = "milk-fluid"
+
+local milk_pumpjack = table.deepcopy(data.raw["mining-drill"]["pumpjack"])
+milk_pumpjack.name = "milk-pumpjack"
+milk_pumpjack.icon = "__cheesetorio__/graphics/icons/milk-pumpjack.png"
+milk_pumpjack.minable.result = "milk-pumpjack"
+milk_pumpjack.resource_categories = { "milk-fluid" }
+milk_pumpjack.output_fluid_box =
+{
+  volume = 1000,
+  pipe_covers = pipecoverspictures(),
+  pipe_connections =
   {
-    mining_time = 1,
-    results =
     {
-      {
-        type = "fluid",
-        name = "crude-oil",
-        amount_min = 10,
-        amount_max = 10,
-        probability = 1
-      }
+      direction = defines.direction.north,
+      positions = { { 1, -1 }, { 1, -1 }, { -1, 1 }, { -1, 1 } },
+      flow_direction = "output"
     }
+  }
+}
+milk_pumpjack.energy_usage = "90kW"
+milk_pumpjack.mining_speed = 1
+milk_pumpjack.module_specification = {
+  module_slots = 2
+}
+milk_pumpjack.allowed_effects = { "consumption", "speed", "productivity", "pollution" }
+data:extend({ milk_pumpjack })
+
+
+
+
+local milk_pumpjack_item = table.deepcopy(data.raw["item"]["pumpjack"])
+
+milk_pumpjack_item.name = "milk-pumpjack"
+
+milk_pumpjack_item.stack_size = 10
+milk_pumpjack_item.place_result = "milk-pumpjack"
+milk_pumpjack_item.icon = "__cheesetorio__/graphics/icons/milk-pumpjack.png"
+
+
+local milk_pumpjack_recipe = {
+  type = "recipe",
+  name = "milk-pumpjack",
+  -- main_product = "milk-pumpjack",
+  enabled = true,
+  energy_required = 1, -- time to craft in seconds (at crafting speed 1)
+  ingredients = {
+    { type = "item",  name = "coal",          amount = 1 },
   },
-  collision_box = {{ -1.4, -1.4}, {1.4, 1.4}},
-  selection_box = {{ -0.5, -0.5}, {0.5, 0.5}},
-  autoplace = resource_autoplace.resource_autoplace_settings{
-    name = "crude-oil",
-    order = "c", -- Other resources are "b"; oil won't get placed if something else is already there.
-    base_density = 8.2,
-    base_spots_per_km2 = 1.8,
-    random_probability = 1/48,
-    random_spot_size_minimum = 1,
-    random_spot_size_maximum = 1, -- don't randomize spot size
-    additional_richness = 220000, -- this increases the total everywhere, so base_density needs to be decreased to compensate
-    has_starting_area_placement = false,
-    resource_index = resource_autoplace.resource_indexes["crude-oil"],
-    regular_rq_factor_multiplier = 1
-  },
-  stage_counts = {0},
-  stages =
-  {
-    sheet =
-    {
-      filename = "__base__/graphics/entity/crude-oil/crude-oil.png",
-      priority = "extra-high",
-      width = 75,
-      height = 61,
-      frame_count = 4,
-      variation_count = 1
-    }
-  },
-  map_color = {r=0.78, g=0.2, b=0.77},
-  map_grid = false
+  results = {
+    { type = "item", name = "milk-pumpjack",     amount = 1 },
+  }
 }
 
 
+data:extend({
+  {
+    type = "resource-category",
+    name = "milk-fluid"
+  }
+})
 
-data:extend { beryllium, berylliumRecipe, milkItem }
+data:extend { beryllium, beryllium_recipe, milk_item, milk_vent, milk_pumpjack_item, milk_pumpjack_recipe }
